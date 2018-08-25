@@ -9,7 +9,6 @@ public class BlackJack {
 		GamePlay gamePlay = new GamePlay();
 		ArrayList<Kaart> cardDeck = new ArrayList<Kaart>();
 		cardDeck.addAll(gamePlay.cardDeckGenerator());
-//		System.out.println(cardDeck);
 		for (int i=0; i<cardDeck.size(); i++) {
 			Kaart getrokkenKaart = cardDeck.get(i);
 			System.out.print(getrokkenKaart.getNaam() + ". ");
@@ -45,9 +44,7 @@ class GamePlay {
 		kleurGenerator("Harten ");
 		kleurGenerator("Ruiten ");
 		kleurGenerator("Klaveren ");
-//		System.out.println(cardDeck);
 		Collections.shuffle(cardDeck);
-//		System.out.println(cardDeck);
 		return cardDeck;
 	}
 	
@@ -59,12 +56,12 @@ class GamePlay {
 		while (playing == true) {
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.next();
+			
 			switch(input) {
 			case "k":
 				Kaart getrokkenKaart = cardDeck.get(kaartIndex);
 				getrokkenKaarten.add(getrokkenKaart.getNaam());
 				System.out.println(getrokkenKaart.getNaam() + ", waarde: " + getrokkenKaart.getWaarde());
-//				System.out.println(cardDeck.get(kaartIndex));
 				score = score + getrokkenKaart.getWaarde();
 				System.out.println("Uw score is: " + score);
 				if (score < 21) {
