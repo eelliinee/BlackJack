@@ -6,6 +6,7 @@ public class BlackJack {
 
 
 	public static void main(String[] args) {
+		System.out.println("Welkom bij Blackjack. Typ (q) om te stoppen met spelen");
 		GamePlay gamePlay = new GamePlay();
 		ArrayList<Kaart> cardDeck = new ArrayList<Kaart>();
 		cardDeck.addAll(gamePlay.cardDeckGenerator());
@@ -23,6 +24,10 @@ public class BlackJack {
 
 class GamePlay {
 	private ArrayList<Kaart> cardDeck = new ArrayList<Kaart>();
+	ArrayList<String> getrokkenKaarten = new ArrayList<String>();
+	int kaartIndex = 0;
+	int score = 0;
+	
 	
 	private void kleurGenerator(String kleur) {
 		for (int i=2; i<=10; i++) {
@@ -48,22 +53,41 @@ class GamePlay {
 		return cardDeck;
 	}
 	
+	private Kaart getCardAddScore() {
+		Kaart getrokkenKaart = cardDeck.get(kaartIndex);
+		getrokkenKaarten.add(getrokkenKaart.getNaam());
+		score = score + getrokkenKaart.getWaarde();
+		kaartIndex++;
+		return getrokkenKaart;
+	}
+	
+	
 	public void play() {
-		int kaartIndex = 0;
-		int score = 0;
+		
 		boolean playing = true;
-		ArrayList<String> getrokkenKaarten = new ArrayList<String>();
+		
+		getCardAddScore();
+		getCardAddScore();
+		System.out.println("Startkaarten: " + getrokkenKaarten);
+		System.out.println("Uw score is: " + score);
+		if (score == 21) {
+			System.out.println("Gefeliciteerd, u heeft nu al gewonnen!");
+			playing = false;
+		} else {
+			System.out.println("Koop een kaart (k) of pas (p)");
+		}
+		
+		
 		while (playing == true) {
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.next();
-			
+	
 			switch(input) {
 			case "k":
-				Kaart getrokkenKaart = cardDeck.get(kaartIndex);
-				getrokkenKaarten.add(getrokkenKaart.getNaam());
+				Kaart getrokkenKaart = getCardAddScore();
 				System.out.println(getrokkenKaart.getNaam() + ", waarde: " + getrokkenKaart.getWaarde());
-				score = score + getrokkenKaart.getWaarde();
 				System.out.println("Uw score is: " + score);
+				
 				if (score < 21) {
 					System.out.println("Wilt u nog een kaart kopen (k) of passen (p)?"); 
 				} else if (score == 21) {
@@ -75,7 +99,7 @@ class GamePlay {
 					System.out.println("Uw kaarten waren: " + getrokkenKaarten);
 					playing = false;
 				}
-				kaartIndex++;
+				
 				
 				break;
 			case "p":
