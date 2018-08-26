@@ -17,6 +17,10 @@ public class GamePlay {
 	
 	public void play() {
 		printDeck();
+		
+		playing = true;
+		System.out.println("Welkom bij Blackjack. Typ (q) om te stoppen met spelen.");
+		
 		startGame();
 		continueGame();
 	}
@@ -76,9 +80,6 @@ public class GamePlay {
 	}
 	
 	private void startGame() {
-		playing = true;
-		
-		System.out.println("Welkom bij Blackjack. Typ (q) om te stoppen met spelen.");
 		
 		getCardAddScore();
 		getCardAddScore();
@@ -113,11 +114,11 @@ public class GamePlay {
 				} else if (score == 21) {
 					System.out.println("Gefeliciteerd, u heeft gewonnen!");
 					System.out.println("Uw kaarten waren: " + cardHand);
-					playing = false;
+					System.out.println("Wilt u verder spelen (s) of stoppen (q)?");
 				} else {
 					System.out.println("Helaas, u heeft verloren");
 					System.out.println("Uw kaarten waren: " + cardHand);
-					playing = false;
+					System.out.println("Wilt u verder spelen (s) of stoppen (q)?");
 				}
 				
 				break;
@@ -127,7 +128,13 @@ public class GamePlay {
 				System.out.println("Uw score was " + score + ", probeer het nog een keer.");
 				score = 0;
 				cardHand.clear();
-				System.out.println("Koop een kaart (k)");
+				startGame();
+				break;
+					
+			case "s":
+				score = 0;
+				cardHand.clear();
+				startGame();
 				break;
 				
 			case "q":
@@ -135,6 +142,9 @@ public class GamePlay {
 				break;
 				
 			}
+			
+		
+	
 			
 		}
 	}
