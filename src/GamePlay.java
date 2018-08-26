@@ -5,13 +5,12 @@ import java.util.Scanner;
 
 public class GamePlay {
 	private ArrayList<Card> cardDeck = new ArrayList<Card>();
-	private ArrayList<String> cardHand = new ArrayList<String>();
+	private ArrayList<Card> cardHand = new ArrayList<Card>();
 	private int cardIndex;
-	private int score;
-	private int cardScore;
 	private boolean playing;
 	
-	GamePlay() {
+	
+	public GamePlay() {
 		cardDeckGenerator(); 
 	}
 	
@@ -24,6 +23,7 @@ public class GamePlay {
 		startGame();
 		continueGame();
 	}
+	
 	
 	private void suitGenerator(String suit) {
 		for (int i=2; i<=10; i++) {
@@ -52,29 +52,6 @@ public class GamePlay {
 		return cardDeck;
 	}
 	
-	private Card getCardAddScore() {
-		Card drawnCard = cardDeck.get(cardIndex);
-		cardHand.add(drawnCard.getName());
-		
-		if (score + drawnCard.getValue() > 21) {
-			score = score + drawnCard.getAltValue();
-			cardScore = drawnCard.getAltValue();
-		} else { 
-			score = score + drawnCard.getValue();
-			cardScore = drawnCard.getValue();
-		}
-		
-		cardIndex++;
-		// when not enough cards in cardDeck, shuffle, print and keep playing
-		if (cardIndex >= cardDeck.size()) {
-			Collections.shuffle(cardDeck);
-			printDeck();
-			cardIndex = 0;
-		}
-		
-		return drawnCard;
-	}
-	
 	private void printDeck() {
 		for (int i=0; i<cardDeck.size(); i++) {
 			Card drawnCard = cardDeck.get(i);
@@ -85,15 +62,44 @@ public class GamePlay {
 		System.out.println("----------------------------------");
 	}
 	
+	private Card getCard() {
+		Card drawnCard = cardDeck.get(cardIndex);
+		cardHand.add(drawnCard);
+		
+		cardIndex++;
+		
+		// when not enough cards in cardDeck, shuffle, print and keep playing
+		if (cardIndex >= cardDeck.size()) {
+			Collections.shuffle(cardDeck);
+			printDeck();
+			cardIndex = 0;
+		}
+		
+		return drawnCard;
+	}
+	
+	private void displayHand() {
+		String cardHandNames = "";
+		for (int i = 0; i <cardHand.size(); i++) {
+			
+			if(i != 0) {
+				cardHandNames += ", ";
+			}
+			
+			cardHandNames += cardHand.get(i).getName();
+		}
+		System.out.println("Hand: " + cardHandNames);
+	}
+	
 	private void startGame() {
 		
-		getCardAddScore();
-		getCardAddScore();
+		getCard();
+		getCard();
 		
-		System.out.println("Startkaarten: " + cardHand);
-		System.out.println("Uw score is: " + score);
+		displayHand();
+		displayScore();
 		
-		if (score == 21) {
+		if (getScore() == 21) {
 			System.out.println("Gefeliciteerd, u heeft nu al gewonnen!");
 			System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
 		} else {
@@ -102,6 +108,38 @@ public class GamePlay {
 		
 	}
 	
+	
+	private int getScore() {
+		int score = 0;
+		for (int i=0; i < cardHand.size(); i++) {
+			score = score + cardHand.get(i).getValue(); 
+		}
+		if (score > 21) {
+			return getAltScore();
+		}
+		return score;
+	}
+	
+	private int getAltScore() {
+		int score = 0;
+		for (int i=0; i < cardHand.size(); i++) {
+			score = score + cardHand.get(i).getAltValue(); 
+		}
+		return score;
+	}
+	
+
+	
+	private void displayScore() {
+		System.out.println("Score: " + getScore());
+	}
+	
+	private void getAndPrintCard() {
+		Card drawnCard = getCard();
+		System.out.println("Getrokken kaart: " + drawnCard.getName());
+	}
+	
+	
 	private void continueGame() {
 		
 		while (playing == true) {
@@ -109,37 +147,38 @@ public class GamePlay {
 			Scanner scanner = new Scanner(System.in);
 			String input = scanner.next();
 	
+			
 			switch(input) {
 			case "k":
-				Card drawnCard = getCardAddScore();
-				System.out.println(drawnCard.getName() + ", waarde: " + cardScore);
-				System.out.println("Uw score is: " + score);
+				getAndPrintCard();
+				displayHand();
+				int score = getScore();
 				
 				if (score < 21) {
+					displayScore();
 					System.out.println("Wilt u nog een kaart kopen (k) of passen (p)?"); 
 				} else if (score == 21) {
+					displayScore();
 					System.out.println("Gefeliciteerd, u heeft gewonnen!");
-					System.out.println("Uw kaarten waren: " + cardHand);
 					System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
 				} else {
-					System.out.println("Helaas, u heeft verloren");
-					System.out.println("Uw kaarten waren: " + cardHand);
-					System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
-				}
-				
+						displayScore();
+						System.out.println("Helaas, u heeft verloren");
+						System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
+					
+				}		
 				break;
 				
 			case "p":
-				System.out.println("Uw kaarten waren: " + cardHand);
-				System.out.println("Uw score was " + score);
+				System.out.println("Uitslag:");
+				displayHand();
 				System.out.println(" ");
-				score = 0;
+				System.out.println("Nieuw spel:");
 				cardHand.clear();
 				startGame();
 				break;
 					
 			case "s":
-				score = 0;
 				cardHand.clear();
 				startGame();
 				break;
@@ -150,8 +189,6 @@ public class GamePlay {
 				
 			}
 			
-		
-	
 			
 		}
 	}

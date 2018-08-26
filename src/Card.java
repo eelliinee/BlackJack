@@ -4,13 +4,13 @@ public class Card {
 	private int value;
 	private int altValue;
 	
-	Card(String name, int value) {
+	public Card(String name, int value) {
 		this(name, value, value);
 		this.name = name;
 		this.value = value;
 	}
 	
-	Card(String name, int value, int altValue) {
+	public Card(String name, int value, int altValue) {
 		this.name = name;
 		this.value = value;
 		this.altValue = altValue;
