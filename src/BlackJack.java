@@ -8,6 +8,9 @@ public class BlackJack {
 	public static void main(String[] args) {
 		System.out.println("Welkom bij Blackjack. Typ (q) om te stoppen met spelen");
 		GamePlay gamePlay = new GamePlay();
+		
+		// alles hieronder naar methode
+		
 		ArrayList<Kaart> cardDeck = new ArrayList<Kaart>();
 		cardDeck.addAll(gamePlay.cardDeckGenerator());
 		for (int i=0; i<cardDeck.size(); i++) {
@@ -15,6 +18,8 @@ public class BlackJack {
 			System.out.print(getrokkenKaart.getNaam() + ". ");
 		}
 		System.out.println(" ");
+		
+		
 		gamePlay.play();
 	}
 
@@ -27,6 +32,7 @@ class GamePlay {
 	ArrayList<String> getrokkenKaarten = new ArrayList<String>();
 	int kaartIndex = 0;
 	int score = 0;
+	private int kaartWaarde;
 	
 	
 	private void kleurGenerator(String kleur) {
@@ -40,7 +46,7 @@ class GamePlay {
 		cardDeck.add(kaart2);
 		Kaart kaart3 = new Kaart(kleur + "Heer", 10);
 		cardDeck.add(kaart3);
-		Kaart kaart4 = new Kaart(kleur + "Aas", 11);
+		Kaart kaart4 = new Kaart(kleur + "Aas", 11, 1);
 		cardDeck.add(kaart4);		
 	}
 	
@@ -56,10 +62,18 @@ class GamePlay {
 	private Kaart getCardAddScore() {
 		Kaart getrokkenKaart = cardDeck.get(kaartIndex);
 		getrokkenKaarten.add(getrokkenKaart.getNaam());
-		score = score + getrokkenKaart.getWaarde();
+		if (score + getrokkenKaart.getWaarde() > 21) {
+			score = score + getrokkenKaart.getAltWaarde();
+			kaartWaarde = getrokkenKaart.getAltWaarde();
+		} else { 
+			score = score + getrokkenKaart.getWaarde();
+			kaartWaarde = getrokkenKaart.getWaarde();
+		}
+		
 		kaartIndex++;
 		return getrokkenKaart;
 	}
+	
 	
 	
 	public void play() {
@@ -85,7 +99,7 @@ class GamePlay {
 			switch(input) {
 			case "k":
 				Kaart getrokkenKaart = getCardAddScore();
-				System.out.println(getrokkenKaart.getNaam() + ", waarde: " + getrokkenKaart.getWaarde());
+				System.out.println(getrokkenKaart.getNaam() + ", waarde: " + kaartWaarde);
 				System.out.println("Uw score is: " + score);
 				
 				if (score < 21) {
@@ -122,15 +136,25 @@ class GamePlay {
 class Kaart {
 	private String naam;
 	private int waarde;
+	private int altWaarde;
 	Kaart(String naam, int waarde) {
+		this(naam, waarde, waarde);
 		this.naam = naam;
 		this.waarde = waarde;
+	}
+	Kaart(String naam, int waarde, int altWaarde) {
+		this.naam = naam;
+		this.waarde = waarde;
+		this.altWaarde = altWaarde;
 	}
 	public String getNaam() {
 		return this.naam;
 	}
 	public int getWaarde() {
 		return this.waarde;
+	}
+	public int getAltWaarde() {
+		return this.altWaarde;
 	}
 }
 
