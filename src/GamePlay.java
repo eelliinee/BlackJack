@@ -24,7 +24,7 @@ public class GamePlay {
 		continueGame();
 	}
 	
-	
+	// making and printing the card deck
 	private void suitGenerator(String suit) {
 		for (int i=2; i<=10; i++) {
 			Card card = new Card(suit + i, i);
@@ -62,6 +62,7 @@ public class GamePlay {
 		System.out.println("----------------------------------");
 	}
 	
+	//making and printing (the cards in) the hand
 	private Card getCard() {
 		Card drawnCard = cardDeck.get(cardIndex);
 		cardHand.add(drawnCard);
@@ -91,24 +92,7 @@ public class GamePlay {
 		System.out.println("Hand: " + cardHandNames);
 	}
 	
-	private void startGame() {
-		
-		getCard();
-		getCard();
-		
-		displayHand();
-		displayScore();
-		
-		if (getScore() == 21) {
-			System.out.println("Gefeliciteerd, u heeft nu al gewonnen!");
-			System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
-		} else {
-			System.out.println("Koop een kaart (k) of pas (p)");
-		}
-		
-	}
-	
-	
+	// calculating score
 	private int getScore() {
 		int score = 0;
 		for (int i=0; i < cardHand.size(); i++) {
@@ -129,17 +113,36 @@ public class GamePlay {
 	}
 	
 
-	
+	// show score
 	private void displayScore() {
 		System.out.println("Score: " + getScore());
 	}
 	
+	// create and print card
 	private void getAndPrintCard() {
 		Card drawnCard = getCard();
 		System.out.println("Getrokken kaart: " + drawnCard.getName());
 	}
 	
+	// gameplay start
+	private void startGame() {
+		
+		getCard();
+		getCard();
+		
+		displayHand();
+		displayScore();
+		
+		if (getScore() == 21) {
+			System.out.println("Gefeliciteerd, u heeft nu al gewonnen!");
+			System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
+		} else {
+			System.out.println("Koop een kaart (k) of pas (p)");
+		}
+		
+	}
 	
+	// gameplay continued
 	private void continueGame() {
 		
 		while (playing == true) {
@@ -190,12 +193,9 @@ public class GamePlay {
 			}
 			
 			
-		}
+		} 
 	}
 	
-
-	
-
 }
 
 
