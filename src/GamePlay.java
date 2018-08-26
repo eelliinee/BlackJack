@@ -65,6 +65,12 @@ public class GamePlay {
 		}
 		
 		cardIndex++;
+		// when not enough cards in cardDeck, shuffle, print and keep playing
+		if (cardIndex >= cardDeck.size()) {
+			Collections.shuffle(cardDeck);
+			printDeck();
+			cardIndex = 0;
+		}
 		
 		return drawnCard;
 	}
@@ -89,7 +95,7 @@ public class GamePlay {
 		
 		if (score == 21) {
 			System.out.println("Gefeliciteerd, u heeft nu al gewonnen!");
-			playing = false;
+			System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
 		} else {
 			System.out.println("Koop een kaart (k) of pas (p)");
 		}
@@ -114,18 +120,19 @@ public class GamePlay {
 				} else if (score == 21) {
 					System.out.println("Gefeliciteerd, u heeft gewonnen!");
 					System.out.println("Uw kaarten waren: " + cardHand);
-					System.out.println("Wilt u verder spelen (s) of stoppen (q)?");
+					System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
 				} else {
 					System.out.println("Helaas, u heeft verloren");
 					System.out.println("Uw kaarten waren: " + cardHand);
-					System.out.println("Wilt u verder spelen (s) of stoppen (q)?");
+					System.out.println("Wilt u nog een keer spelen (s) of stoppen (q)?");
 				}
 				
 				break;
 				
 			case "p":
 				System.out.println("Uw kaarten waren: " + cardHand);
-				System.out.println("Uw score was " + score + ", probeer het nog een keer.");
+				System.out.println("Uw score was " + score);
+				System.out.println(" ");
 				score = 0;
 				cardHand.clear();
 				startGame();
